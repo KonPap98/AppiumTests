@@ -20,6 +20,8 @@ namespace AppiumTests.Base
             options.AddAdditionalAppiumOption("udid", "emulator-5554");
             options.AddAdditionalAppiumOption("appPackage", "com.EspanolDictionary");
             options.AddAdditionalAppiumOption("noReset", true);
+            options.AddAdditionalAppiumOption("autoGrantPermissions", true);
+            options.AddAdditionalAppiumOption("autoAcceptAlerts", true);
 
             Driver = new AndroidDriver(
                 new Uri("http://127.0.0.1:4723"),

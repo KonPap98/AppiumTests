@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.Android.Enums;
+using System.ComponentModel;
 
 namespace AppiumTests.Pages
 {
@@ -22,6 +23,10 @@ namespace AppiumTests.Pages
         private By RegisterButton => MobileBy.AccessibilityId("Register");
         private By ConfirmPasswordInput => By.XPath("//android.widget.EditText[@hint='Confirm Password']");
         private By SingUpButton => MobileBy.AccessibilityId("SIGN UP");
+        private By InvalidLoginCredPopUp => MobileBy.AccessibilityId("Invalid login credentials");
+        private By AnonymusSingInsDisabledPopUp => MobileBy.AccessibilityId("Anonymous sign-ins are disabled");
+        private By GoogleSingInButton => MobileBy.AccessibilityId("Sign in with Google");
+        private By GoogleAccount => By.XPath("//android.widget.FrameLayout[@resource-id='com.google.android.gms:id/account_particle_disc']");
 
         public void Login(string email, string password)
         {
@@ -35,6 +40,23 @@ namespace AppiumTests.Pages
             passwordField.SendKeys(password);
 
             _driver.FindElement(LoginButton).Click();
+        }
+
+        public void GoogleLogin()
+        {
+            WaitHelper.WaitForElementOnScreen(_driver, GoogleSingInButton);
+
+            var googleLoginButton = _driver.FindElement(GoogleSingInButton);
+            googleLoginButton.Click();
+
+            WaitHelper.WaitForElementOnScreen(_driver, GoogleAccount);
+            var googleAccountSelect = _driver.FindElement(GoogleAccount);
+            googleAccountSelect.Click();
+        }
+
+        public void CheckForLoginFailure()
+        {
+            WaitHelper.WaitForElementOnScreen(_driver, InvalidLoginCredPopUp);
         }
 
         public void Register(string email, string password)
